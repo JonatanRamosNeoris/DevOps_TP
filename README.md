@@ -15,5 +15,6 @@ Los atributos de un jugador son los siguientes:
  - Newtonsoft.Json >= 12.0.2
  - Microsoft.AspNet.WebApi.Core >= 5.2.9
  - Microsoft.AspNet.WebApi.WebHost >= 5.2.9
+ - Microsoft.AspNet.WebApi.Client >=5.2.9
 
 Abrir la url http://localhost:8081/api/Players para visualizar el resultado
