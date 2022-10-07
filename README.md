@@ -6,18 +6,14 @@ Los atributos de un jugador son los siguientes:
  - id: int
  - first name: string
  - last name: string
- - birthday: int (timestamp)
+ - birthday: long (ticks)
 
- La visualizacion del atributo birthday debe ser en formato dd/mm/yyyy)
+ La visualizacion del atributo birthday debe ser en formato dd/mm/yyyy
 
 ## Requisitos
- - nodejs: >=14
- - npm: >= 8.14
-
-### Instalación y ejecución
-```
-npm install
-npm run dev
-```
+ - .Net Framework >= 4.6.
+ - Newtonsoft.Json >= 12.0.2
+ - Microsoft.AspNet.WebApi.Core >= 5.2.9
+ - Microsoft.AspNet.WebApi.WebHost >= 5.2.9
 
 Abrir la url http://localhost:8081/api/Players para visualizar el resultado
