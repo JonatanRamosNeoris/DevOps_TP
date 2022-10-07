@@ -1,4 +1,5 @@
 ﻿using DevOps.Web.Api.Models.Entities;
+using DevOps.Web.Api.Models.Responses;
 using DevOps.Web.Api.Services;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace DevOps.Web.Api.Controllers
         [Route("api/Players")]
         public IHttpActionResult Get()
         {
-            return Ok<PlayerEntity[]>(this.Service.GetAll());
+            return Ok<PlayerResponseEntity[]>(this.Service.GetAll());
         }
     }
 }

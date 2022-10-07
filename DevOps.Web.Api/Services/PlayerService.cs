@@ -1,4 +1,5 @@
 ﻿using DevOps.Web.Api.Models.Entities;
+using DevOps.Web.Api.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,24 @@ namespace DevOps.Web.Api.Services
         {
             this.Respository = new List<PlayerEntity>();
 
-            this.Respository.Add(new PlayerEntity() { Name = "Pedro", LastName = "Perez", Birthday = 1 });
+            this.Respository.Add(new PlayerEntity() { Name = "Pedro", LastName = "Perez", Birthday = new DateTime(1978, 5, 24).Ticks });
 
-            this.Respository.Add(new PlayerEntity() { Name = "Juan", LastName = "Gonsalez", Birthday = 1 });
+            this.Respository.Add(new PlayerEntity() { Name = "Juan", LastName = "Gonsalez", Birthday = new DateTime(1997, 7, 12).Ticks });
         }
 
         public List<PlayerEntity> Respository { get; set; }
 
-        public PlayerEntity[] GetAll()
+        public PlayerResponseEntity[] GetAll()
         {
-            return this.Respository.ToArray();
+            var list = this.Respository.ToArray();
+
+            return list.Select(i => 
+            new PlayerResponseEntity()
+            {
+                Name = i.Name,
+                LastName = i.LastName,
+                Birthday= (new DateTime(i.Birthday)).ToString("dd/MM/yyyy")
+            }).ToArray();
         }
     }
 }

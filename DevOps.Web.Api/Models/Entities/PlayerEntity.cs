@@ -15,6 +15,6 @@ namespace DevOps.Web.Api.Models.Entities
     {
         public string Name { get; set; }
         public string LastName { get; set; }
-        public int Birthday { get; set; }
+        public long Birthday { get; set; }
     }
 }
