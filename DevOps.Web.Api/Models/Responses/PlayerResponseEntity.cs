@@ -13,6 +13,7 @@ namespace DevOps.Web.Api.Models.Responses
             
         }
 
+        public string ID { get; set; }
         public string Name { get; set; }
 
         public string LastName { get; set; }

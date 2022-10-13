@@ -13,9 +13,9 @@ namespace DevOps.Web.Api.Services
         {
             this.Respository = new List<PlayerEntity>();
 
-            this.Respository.Add(new PlayerEntity() { Name = "Pedro", LastName = "Perez", Birthday = new DateTime(1978, 5, 24).Ticks });
+            this.Respository.Add(new PlayerEntity() { ID = 1, Name = "Pedro", LastName = "Perez", Birthday = new DateTime(1978, 5, 24).Ticks });
 
-            this.Respository.Add(new PlayerEntity() { Name = "Juan", LastName = "Gonsalez", Birthday = new DateTime(1997, 7, 12).Ticks });
+            this.Respository.Add(new PlayerEntity() { ID = 2, Name = "Juan", LastName = "Gonsalez", Birthday = new DateTime(1997, 7, 12).Ticks });
         }
 
         public List<PlayerEntity> Respository { get; set; }
@@ -24,12 +24,13 @@ namespace DevOps.Web.Api.Services
         {
             var list = this.Respository.ToArray();
 
-            return list.Select(i => 
+            return list.Select(i =>
             new PlayerResponseEntity()
             {
+                ID = i.ID.ToString(),
                 Name = i.Name,
                 LastName = i.LastName,
-                Birthday= (new DateTime(i.Birthday)).ToString("dd/MM/yyyy")
+                Birthday = (new DateTime(i.Birthday)).ToString("dd/MM/yyyy")
             }).ToArray();
         }
     }
