@@ -1,4 +1,5 @@
-﻿using DevOps.Web.Api.Models.Entities;
+﻿using DevOps.Web.Api.Adapters;
+using DevOps.Web.Api.Models.Entities;
 using DevOps.Web.Api.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,12 @@ namespace DevOps.Web.Api.Services
     {
         public PlayerService()
         {
-            this.Respository = new List<PlayerEntity>();
+            this.adapter = new SqlAdapter();
 
-            this.Respository.Add(new PlayerEntity() { ID = 1, Name = "Pedro", LastName = "Perez", Birthday = new DateTime(1978, 5, 24).Ticks });
-
-            this.Respository.Add(new PlayerEntity() { ID = 2, Name = "Juan", LastName = "Gonsalez", Birthday = new DateTime(1997, 7, 12).Ticks });
+            this.Respository = this.adapter.ReadAll();
         }
+
+        protected SqlAdapter adapter = null;
 
         public List<PlayerEntity> Respository { get; set; }
 

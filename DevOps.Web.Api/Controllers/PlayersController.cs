@@ -31,7 +31,13 @@ namespace DevOps.Web.Api.Controllers
         [Route("api/Players")]
         public IHttpActionResult Get()
         {
-            return Ok<PlayerResponseEntity[]>(this.Service.GetAll());
+            try {
+                return Ok<PlayerResponseEntity[]>(this.Service.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return Ok<string>(ex.Message);
+            }            
         }
     }
 }

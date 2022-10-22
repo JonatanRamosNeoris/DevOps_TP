@@ -1,0 +1,11 @@
+.vs\
+\TestResults\
+\DevOps.Web.Api\bin\
+\DevOps.Web.Api\obj\
+\DevOps.UnitTest\bin\
+\DevOps.UnitTest\obj\
+\DevOps.Web.Api\*.user
+.vs/DevOps_TP/v16/.suo
+*.testlog
+*.manifest
+.vs/DevOps_TP/v16/.suo
