@@ -1,15 +1,9 @@
 pipeline {
     agent any
     
-    triggers {
-        cron('H/4 * * * 1-5')
-        pollSCM('0 0 * * 0')
-    }
-    
     environment {
         DEFAULT_BRANCH = 'TP03'
-        BRANCH_NAME = 'MASTER'
-        BRANCH = 'master'
+        BRANCH = 'MASTER'
         COMMIT_ID = ''
         REPO_URL = 'https://github.com/JonatanRamosNeoris/DevOps_TP.git'
         SLN_NAME = 'DevOps_TP.sln'
@@ -29,6 +23,8 @@ pipeline {
                     
                     stdout2 = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
                     BRANCH = stdout2.readLines().drop(1).join(" ")
+					
+					echo "$tag $env.tag $env.tag_name"
 
                     bat "nuget restore ${SLN_NAME}"
                 }
