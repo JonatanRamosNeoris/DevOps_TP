@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    
+    environment {
+        BRANCH = '*/TP03'
+        BRANCH_NAME = 'TP03'
+        COMMIT_ID = ''
+        REPO_URL = 'https://github.com/JonatanRamosNeoris/DevOps_TP.git'
+        SLN_NAME = 'DevOps_TP.sln'
+        FWK = '4.8'
+        TEST_DIR = 'DevOps.UnitTest\\bin\\release'
+        TEST_DLL = 'DevOps.UnitTest.dll'
+    }
+    
+    stages{
+        stage('Checkout'){
+            steps{
+                // -- obtiene los cambios del repositorio
+                checkout changelog: false, poll: false, scm: [
+                        $class: 'GitSCM', branches: [
+                            [name: "${BRANCH}"]], extensions: [], userRemoteConfigs: [
+                                [url: "${REPO_URL}"]
+                            ]
+                        ]
+                script{
+                    bat "nuget restore ${SLN_NAME}"
+                }
+            }
+        }
+        stage('Build'){
+            steps{
+                bat "msbuild ${SLN_NAME} /t:Build /p:Configuration=Release /p:TargetFrameworkVersion=v${FWK}"
+            }
+        }
+        stage('Test'){
+            steps{
+                dir("${TEST_DIR}") {
+                    bat "vstest.console ${TEST_DLL} --ResultsDirectory:. --logger:trx;LogFileName=TestResult.trx"
+                
+                    xunit(
+                    [MSTest(deleteOutputFiles: true,
+                            failIfNotNew: true,
+                            pattern: '*.trx',
+                            skipNoTestFiles: false,
+                            stopProcessingIfError: true)
+                    ])
+                }
+            }
+        }
+        stage('Deploy'){
+            when { tag 'v*' }
+            steps{
+                echo "Stage - Deploying branch ${BRANCH_NAME}"
+                script {
+                    echo "branch $BRANCH"
+                    echo "sh script/deploy_script stage"
+                    echo 'Deployment end'
+                }
+            }
+        }
+    }
+}
