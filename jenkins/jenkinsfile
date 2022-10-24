@@ -2,8 +2,9 @@ pipeline {
     agent any
     
     environment {
-        BRANCH = '*/TP03'
+        DEFAULT_BRANCH = 'TP03'
         BRANCH_NAME = 'TP03'
+        BRANCH = 'master'
         COMMIT_ID = ''
         REPO_URL = 'https://github.com/JonatanRamosNeoris/DevOps_TP.git'
         SLN_NAME = 'DevOps_TP.sln'
@@ -18,11 +19,17 @@ pipeline {
                 // -- obtiene los cambios del repositorio
                 checkout changelog: false, poll: false, scm: [
                         $class: 'GitSCM', branches: [
-                            [name: "${BRANCH}"]], extensions: [], userRemoteConfigs: [
+                            [name: '*']], extensions: [], userRemoteConfigs: [
                                 [url: "${REPO_URL}"]
                             ]
                         ]
                 script{
+                    stdout = bat(returnStdout: true, script: 'git rev-parse HEAD').trim()
+                    COMMIT_ID = stdout.readLines().drop(1).join(" ")      
+                    
+                    stdout = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
+                    BRANCH = stdout.readLines().drop(1).join(" ")
+                    
                     bat "nuget restore ${SLN_NAME}"
                 }
             }
