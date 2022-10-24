@@ -1,9 +1,14 @@
 pipeline {
     agent any
     
+    triggers {
+        cron('H/4 * * * 1-5')
+        pollSCM('0 0 * * 0')
+    }
+    
     environment {
         DEFAULT_BRANCH = 'TP03'
-        BRANCH_NAME = 'TP03'
+        BRANCH_NAME = 'MASTER'
         BRANCH = 'master'
         COMMIT_ID = ''
         REPO_URL = 'https://github.com/JonatanRamosNeoris/DevOps_TP.git'
@@ -17,19 +22,14 @@ pipeline {
         stage('Checkout'){
             steps{
                 // -- obtiene los cambios del repositorio
-                checkout changelog: false, poll: false, scm: [
-                        $class: 'GitSCM', branches: [
-                            [name: '*']], extensions: [], userRemoteConfigs: [
-                                [url: "${REPO_URL}"]
-                            ]
-                        ]
+                checkout ([$class: 'GitSCM',branches: [[name: '*' ]], extensions: [], url: "${REPO_URL}"])
                 script{
-                    stdout = bat(returnStdout: true, script: 'git rev-parse HEAD').trim()
-                    COMMIT_ID = stdout.readLines().drop(1).join(" ")      
+                    stdout1 = bat(returnStdout: true, script: 'git rev-parse HEAD').trim()
+                    COMMIT_ID = stdout1.readLines().drop(1).join(" ")      
                     
-                    stdout = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
-                    BRANCH = stdout.readLines().drop(1).join(" ")
-                    
+                    stdout2 = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
+                    BRANCH = stdout2.readLines().drop(1).join(" ")
+
                     bat "nuget restore ${SLN_NAME}"
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
             }
         }
         stage('Deploy'){
-            when { tag 'v*' }
+            when {tag 'v*'}
             steps{
                 echo "Stage - Deploying branch ${BRANCH_NAME}"
                 script {
