@@ -24,7 +24,7 @@ pipeline {
                     stdout2 = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
                     BRANCH = stdout2.readLines().drop(1).join(" ")
 					
-					echo "$tag $env.tag $env.tag_name"
+					echo "$env.tag $env.tag_name"
 
                     bat "nuget restore ${SLN_NAME}"
                 }
