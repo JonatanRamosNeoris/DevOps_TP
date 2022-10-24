@@ -18,13 +18,13 @@ pipeline {
                 // -- obtiene los cambios del repositorio
                 checkout ([$class: 'GitSCM',branches: [[name: '*' ]], extensions: [], url: "${REPO_URL}"])
                 script{
-                    //stdout1 = bat(returnStdout: true, script: 'git rev-parse HEAD').trim()
-                    //COMMIT_ID = stdout1.readLines().drop(1).join(" ")      
+                    stdout1 = bat(returnStdout: true, script: 'git rev-parse HEAD').trim()
+                    COMMIT_ID = stdout1.readLines().drop(1).join(" ")      
                     
-                    //stdout2 = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
-                    //BRANCH = stdout2.readLines().drop(1).join(" ")
+                    stdout2 = bat(returnStdout: true, script: "git name-rev ${COMMIT_ID} --name-only").trim()
+                    BRANCH = stdout2.readLines().drop(1).join(" ")
 					
-					echo "$env.tag $env.tag_name"
+					echo "tags: $env.tag_name"
 
                     bat "nuget restore ${SLN_NAME}"
                 }
